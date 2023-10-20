@@ -29,11 +29,11 @@ class OrdersService extends cds.ApplicationService {
     })
 
     // could there be an .after('$batch', 'Orders'.. where errors of the batch-contained requests are accessible?
-    this.after('DELETE', 'Orders', async function(_results, req) {
-      if (!['7e2f2640-6866-4dcf-8f4d-3027aa831cad','64e718c9-ff99-47f1-8ca3-950c850777d4'].includes(req.data.ID)) {
-        req.reject();
-      }
-    })
+    // this.after('DELETE', 'Orders', async function(_results, req) {
+    //   if (!['7e2f2640-6866-4dcf-8f4d-3027aa831cad','64e718c9-ff99-47f1-8ca3-950c850777d4'].includes(req.data.ID)) {
+    //     req.reject();
+    //   }
+    // })
 
     return super.init()
   }
