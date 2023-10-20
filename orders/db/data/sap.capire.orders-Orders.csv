@@ -1,3 +1,5 @@
 ID;createdAt;createdBy;buyer;OrderNo;currency_code
 7e2f2640-6866-4dcf-8f4d-3027aa831cad;2019-01-31;john.doe@test.com;john.doe@test.com;1;EUR
 64e718c9-ff99-47f1-8ca3-950c850777d4;2019-01-30;jane.doe@test.com;jane.doe@test.com;2;EUR
+a9197edb-6720-4392-926f-32d483eed9c1;2019-01-29;anonymous;anonymous;0;EUR
+a778986a-31a2-4c13-851b-e039e2e6f045;2019-01-29;anonymous;anonymous;0;EUR

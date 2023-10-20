@@ -16,11 +16,23 @@ class OrdersService extends cds.ApplicationService {
     })
 
     this.before ('DELETE', 'Orders', async function(req) {
+      if (!['7e2f2640-6866-4dcf-8f4d-3027aa831cad','64e718c9-ff99-47f1-8ca3-950c850777d4'].includes(req.data.ID)) {
+        req.error (422, 'Cannot delete order ' + req.data.ID);
+        req.error (422, 'Please re-check order ' + req.data.ID);
+        return;
+      }
       const { ID } = req.data
       const Items = await cds.tx(req).run (
         SELECT.from (OrderItems, oi => { oi.product_ID, oi.quantity }) .where ({up__ID:ID})
       )
       if (Items) await Promise.all (Items.map(it => this.orderChanged (it.product_ID, -it.quantity)))
+    })
+
+    // could there be an .after('$batch', 'Orders'.. where errors of the batch-contained requests are accessible?
+    this.after('DELETE', 'Orders', async function(_results, req) {
+      if (!['7e2f2640-6866-4dcf-8f4d-3027aa831cad','64e718c9-ff99-47f1-8ca3-950c850777d4'].includes(req.data.ID)) {
+        req.reject();
+      }
     })
 
     return super.init()
