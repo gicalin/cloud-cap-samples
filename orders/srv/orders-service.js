@@ -1,37 +1,39 @@
 const cds = require ('@sap/cds')
-class OrdersService extends cds.ApplicationService {
 
-  /** register custom handlers */
-  init(){
-    const { 'Orders.Items':OrderItems } = this.entities
+module.exports = srv => {
+    const { 'Orders.Items': OrderItems } = srv.entities
 
-    this.before ('UPDATE', 'Orders', async function(req) {
+    srv.before ('UPDATE', 'Orders', async function(req) {
       const { ID, Items } = req.data
       if (Items) for (let { product_ID, quantity } of Items) {
         const { quantity:before } = await cds.tx(req).run (
           SELECT.one.from (OrderItems, oi => oi.quantity) .where ({up__ID:ID, product_ID})
         )
-        if (quantity != before) await this.orderChanged (product_ID, quantity-before)
+        if (quantity != before) await orderChanged (product_ID, quantity-before)
       }
     })
 
-    this.before ('DELETE', 'Orders', async function(req) {
+    srv.before ('DELETE', 'Orders', async function(req) {
       const { ID } = req.data
       const Items = await cds.tx(req).run (
         SELECT.from (OrderItems, oi => { oi.product_ID, oi.quantity }) .where ({up__ID:ID})
       )
-      if (Items) await Promise.all (Items.map(it => this.orderChanged (it.product_ID, -it.quantity)))
+      if (Items) await Promise.all (Items.map(it => orderChanged (it.product_ID, -it.quantity)))
     })
 
-    return super.init()
-  }
+    srv.before('UPDATE', 'Orders.Items.drafts', async function(req) {
+      const { ID, quantity } = req.data
+      const item = await cds.tx(req).run (
+        SELECT.one.from(OrderItems.drafts, oi => { oi.quantity }).where({ID:ID})
+      )
+      if (item?.quantity > quantity) 
+        req.reject(400, "An item's quantity cannot be lowered")
+    })
 
   /** order changed -> broadcast event */
-  orderChanged (product, deltaQuantity) {
+  function orderChanged (product, deltaQuantity) {
     // Emit events to inform subscribers about changes in orders
     console.log ('> emitting:', 'OrderChanged', { product, deltaQuantity })
-    return this.emit ('OrderChanged', { product, deltaQuantity })
+    return srv.emit ('OrderChanged', { product, deltaQuantity })
   }
-
 }
-module.exports = OrdersService

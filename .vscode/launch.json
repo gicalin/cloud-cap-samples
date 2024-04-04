@@ -5,6 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "orders",
+      "command": "npx cds watch orders",
+      "type": "node-terminal",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**",
+        "**/cds/lib/lazy.js",
+        "**/cds/lib/req/cds-context.js",
+        "**/odata-v4/okra/**"
+      ]
+    },
+    {
       "name": "bookshop",
       "command": "npx cds watch bookshop",
       "type": "node-terminal",
