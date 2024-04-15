@@ -45,6 +45,9 @@
         "[production]": {
           "model": "db/hana"
         }
+      },
+      "telemetry": {
+        "kind": "to-console"
       }
     },
     "hana": {
