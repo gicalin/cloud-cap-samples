@@ -5,10 +5,10 @@
   "repository": "https://github.com/sap-samples/cloud-cap-samples.git",
   "author": "daniel.hutzel@sap.com",
   "dependencies": {
-    "@sap/cds": ">=7.8"
+    "@sap/cds": ">=7.9.0"
   },
   "overrides": {
-    "@sap/cds-compiler": ">=4.8"
+    "@sap/cds-compiler": ">=4.9"
   },
   "workspaces": [
     "./bookshop",
@@ -24,11 +24,12 @@
   ],
   "devDependencies": {
     "@cap-js/sqlite": "^1",
-    "@sap/eslint-plugin-cds": "^2.6.1",
+    "@sap/eslint-plugin-cds": "^3",
     "axios": "^1",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "chai-subset": "^1.6.0",
+    "eslint": "^9",
     "semver": "^7"
   },
   "scripts": {
@@ -41,7 +42,8 @@
     "jest": "npx jest --silent",
     "start": "cds watch fiori",
     "test": "npm run jest -- --silent",
-    "test:hello": "cd hello && npm test"
+    "test:hello": "cd hello && npm test",
+    "lint": "eslint ."
   },
   "jest": {
     "testTimeout": 20000,
