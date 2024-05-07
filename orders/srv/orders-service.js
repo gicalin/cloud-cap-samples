@@ -30,6 +30,20 @@ module.exports = srv => {
         req.reject(400, "An item's quantity cannot be lowered")
     })
 
+    srv.before('READ', 'Orders', async function(req) {
+      if (req.data.ID) {
+        await  cds.tx(req).run(`SELECT 1 / 0 FROM DUMMY`)
+      }
+    })
+
+    srv.on('error', (err) => {
+      const code = err?.code || Number(err?.err?.code);
+      if (code === 304) {
+        err.code = 422;
+        err.message = `Could not divide by 0 ${err.query ? 'in ' + err.query : ''}`;
+      }
+    });
+
   /** order changed -> broadcast event */
   function orderChanged (product, deltaQuantity) {
     // Emit events to inform subscribers about changes in orders
