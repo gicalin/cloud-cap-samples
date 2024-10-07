@@ -5,7 +5,10 @@
     "repository": "https://github.com/sap-samples/cloud-cap-samples.git",
     "author": "daniel.hutzel@sap.com",
     "dependencies": {
-        "@sap/cds": ">=8"
+        "@sap/cds": "=8.3.0"
+    },
+    "overrides": {
+        "@sap/cds-compiler": "=5.3.0"
     },
     "workspaces": [
         "./bookshop",
