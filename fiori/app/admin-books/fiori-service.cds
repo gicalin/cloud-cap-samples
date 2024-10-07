@@ -69,9 +69,33 @@ annotate AdminService.Books.texts with {
 
 // Add Value Help for Locales
 annotate AdminService.Books.texts {
-	locale @(
-		ValueList.entity:'Languages', Common.ValueListWithFixedValues, //show as drop down, not a dialog
-	)
+    locale @(Common.ValueList: {
+        $Type         : 'Common.ValueListType',
+        CollectionPath: 'Languages',
+        Parameters    : [
+            {
+                $Type            : 'Common.ValueListParameterInOut',
+                LocalDataProperty: locale,
+                ValueListProperty: 'code',
+            },
+            // Outcome, as expected: GET Languages?$select=code,descr,name&$count=true&$orderby=code&$filter=code%20eq%20'en'...
+            // {
+            //     $Type            : 'Common.ValueListParameterConstant',
+            //     Constant         : 'en',
+            //     ValueListProperty: 'code',
+            // },
+            // https://sap.github.io/odata-vocabularies/vocabularies/Common.html#ValueListParameterConstants
+			// Expected: GET Languages?$select=code,descr,name&$count=true&$orderby=code&$filter=code%20eq%20'en'%20or%20code%20eq%20'en_GB'...
+            {
+                $Type            : 'Common.ValueListParameterConstants',
+                Constants        : [
+                    'en',
+                    'en_GB'
+                ],
+                ValueListProperty: 'code',
+            },
+        ],
+    }, )
 }
 // In addition we need to expose Languages through AdminService as a target for ValueList
 using { sap } from '@sap/cds/common';
