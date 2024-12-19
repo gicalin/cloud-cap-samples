@@ -13,7 +13,7 @@ Find here a collection of samples for the [SAP Cloud Application Programming Mod
 
 ### Preliminaries
 
-1. Ensure you have the latest LTS version of Node.js installed (see [Getting Started](https://cap.cloud.sap/docs/get-started/))
+1. Ensure you have the latest LTS version of Node.js installed (see [Getting Started](https://cap.cloud.sap/docs/get-started/jumpstart))
 2. Install [**@sap/cds-dk**](https://cap.cloud.sap/docs/get-started/) globally:
 
    ```sh
@@ -36,7 +36,7 @@ cd samples
 In the samples folder run:
 
 ```sh
-npm install
+npm ci
 ```
 
 ### Run

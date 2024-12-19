@@ -47,7 +47,7 @@ module.exports = srv => {
   /** order changed -> broadcast event */
   function orderChanged (product, deltaQuantity) {
     // Emit events to inform subscribers about changes in orders
-    console.log ('> emitting:', 'OrderChanged', { product, deltaQuantity })
-    return srv.emit ('OrderChanged', { product, deltaQuantity })
+    console.log ('> emitting:', 'OrderChanged', { product, deltaQuantity }) // eslint-disable-line no-console
+    return this.emit ('OrderChanged', { product, deltaQuantity })
   }
 }
