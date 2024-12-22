@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "dependencies": {
     "@capire/common": "*",
-    "@sap/cds": ">=5"
+    "@sap/cds": ">=7.8",
+    "@sap/cds-hana": "^2"
+  },
+  "cds": {
+    "requires": {
+      "db": "hana"
+    }
   }
 }
