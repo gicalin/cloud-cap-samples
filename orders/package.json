@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "dependencies": {
     "@capire/common": "*",
-    "@sap/cds": ">=7.8",
-    "@sap/cds-hana": "^2"
+    "@sap/cds": ">=8",
+    "@cap-js/hana": "^1"
   },
   "cds": {
     "requires": {
-      "db": "hana"
+      "db": "hana",
+      "[production]": {
+        "db": "hana"
+      }
+    },
+    "sql": {
+      "native_hana_associations": false
     }
   }
 }

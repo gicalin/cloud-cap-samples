@@ -30,11 +30,11 @@ module.exports = srv => {
         req.reject(400, "An item's quantity cannot be lowered")
     })
 
-    srv.before('READ', 'Orders', async function(req) {
-      if (req.data.ID) {
-        await  cds.tx(req).run(`SELECT 1 / 0 FROM DUMMY`)
-      }
-    })
+    // srv.before('READ', 'Orders', async function(req) {
+    //   if (req.data.ID) {
+    //     await  cds.tx(req).run(`SELECT 1 / 0 FROM DUMMY`)
+    //   }
+    // })
 
     srv.on('error', (err) => {
       const code = err?.code || Number(err?.err?.code);
