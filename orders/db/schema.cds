@@ -12,6 +12,7 @@ entity Orders : cuid, managed {
   };
   buyer    : User;
   currency : Currency;
+  symbol   : Currency;
 }
 
 /** This is a stand-in for arbitrary ordered Products */
