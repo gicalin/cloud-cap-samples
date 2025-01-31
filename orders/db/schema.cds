@@ -1,6 +1,11 @@
 using { Currency, User, managed, cuid } from '@sap/cds/common';
 namespace sap.capire.orders;
 
+entity WithLargeString {
+  key ID: UUID;
+  edmx : LargeString;
+}
+
 entity Orders : cuid, managed {
   OrderNo  : String(44) @title:'Order Number'; //> readable key
   Items    : Composition of many {

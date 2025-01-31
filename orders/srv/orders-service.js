@@ -1,7 +1,7 @@
 const cds = require ('@sap/cds')
 
 module.exports = srv => {
-    const { 'Orders.Items': OrderItems } = srv.entities
+    const { 'Orders.Items': OrderItems, 'WithLargeString': WithLargeString } = srv.entities
 
     srv.before ('UPDATE', 'Orders', async function(req) {
       const { ID, Items } = req.data
@@ -30,12 +30,20 @@ module.exports = srv => {
         req.reject(400, "An item's quantity cannot be lowered")
     })
 
-    // srv.before('READ', 'Orders', async function(req) {
-    //   if (req.data.ID) {
-    //     await  cds.tx(req).run(`SELECT 1 / 0 FROM DUMMY`)
-    //   }
-    // })
+    srv.before('READ', 'WithLargeString', async function(req) {
+      if (req.data.ID === '00000000000000000000000000000000') {
+        // if you'd like to insert the data while triggering GET, uncomment the following lines
+        // const fileContent = require('fs').readFileSync(require('path').join(__dirname, 'largeString.txt'), 'utf8')
+        // const jsonData = JSON.parse(fileContent)
+        // await cds.tx(async () => INSERT.into(WithLargeString).entries({ID:'00000000000000000000000000000000', edmx:jsonData.value}));
+      }
+    })
 
+    srv.after('READ', 'WithLargeString', async function(results, req) {
+      if (req.data.ID === '00000000000000000000000000000000') {
+        results[0].edmx = results[0].edmx.toString();
+      }
+    });
     srv.on('error', (err) => {
       const code = err?.code || Number(err?.err?.code);
       if (code === 304) {
