@@ -2,9 +2,10 @@
   "name": "@capire/orders",
   "version": "1.0.0",
   "dependencies": {
+    "@cap-js/hana": ">=1",
     "@capire/common": "*",
     "@sap/cds": ">=8",
-    "@cap-js/hana": "^1"
+    "@sap/xssec": "^4"
   },
   "cds": {
     "requires": {

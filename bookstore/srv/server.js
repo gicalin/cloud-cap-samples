@@ -1,10 +1,17 @@
-////////////////////////////////////////////////////////////////////////////
-//
-//    Mashing up bookshop services with required services...
-//
-module.exports = async()=>{ // called by server.js
+const cds = require ('@sap/cds')
 
-  const cds = require('@sap/cds')
+
+// Add routes to UIs from imported packages
+if (!cds.env.production) cds.once ('bootstrap', (app) => {
+  app.serve ('/bookshop') .from ('@capire/bookshop','app/vue')
+  app.serve ('/reviews') .from ('@capire/reviews','app/vue')
+  app.serve ('/orders') .from('@capire/orders','app/orders')
+})
+
+
+// Mashing up bookshop services with required services...
+cds.once ('served', async ()=>{
+
   const CatalogService = await cds.connect.to ('CatalogService')
   const ReviewsService = await cds.connect.to ('ReviewsService')
   const OrdersService = await cds.connect.to ('OrdersService')
@@ -29,7 +36,7 @@ module.exports = async()=>{ // called by server.js
   CatalogService.on ('OrderedBook', async (msg) => {
     const { book, quantity, buyer } = msg.data
     const { title, price } = await db.read (Books, book, b => { b.title, b.price })
-    return OrdersService.create ('Orders').entries({
+    return OrdersService.create ('OrdersNoDraft').entries({
       OrderNo: 'Order at '+ (new Date).toLocaleString(),
       Items: [{ product:{ID:`${book}`}, title, price, quantity }],
       buyer, createdBy: buyer
@@ -55,4 +62,4 @@ module.exports = async()=>{ // called by server.js
     .and ('stock >=', deltaQuantity)
     .set ('stock -=', deltaQuantity)
   })
-}
+})

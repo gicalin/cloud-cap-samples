@@ -8,7 +8,7 @@ entity Books : managed {
   author   : Association to Authors @mandatory;
   genre    : Association to Genres;
   stock    : Integer;
-  price    : Decimal;
+  price    : Price;
   currency : Currency;
   image    : LargeBinary @Core.MediaType: 'image/png';
 }
@@ -25,7 +25,14 @@ entity Authors : managed {
 
 /** Hierarchically organized Code List for Genres */
 entity Genres : sap.common.CodeList {
-  key ID   : Integer;
+  key ID   : UUID;
   parent   : Association to Genres;
   children : Composition of many Genres on children.parent = $self;
 }
+
+type Price : Decimal(9,2);
+
+
+// ------------------------------------------------------------------
+// temporary workaround for reuse in fiori sample and hana deployment
+annotate Books with @fiori.draft.enabled;

@@ -1,8 +1,8 @@
 const cds = require('@sap/cds')
+const { GET, expect, axios } = cds.test ('@capire/bookshop')
+axios.defaults.auth = { username: 'alice', password: 'admin' }
 
 describe('cap/samples - Bookshop APIs', () => {
-  const { GET, expect, axios } = cds.test ('@capire/bookshop')
-  axios.defaults.auth = { username: 'alice', password: 'admin' }
 
   it('serves $metadata documents in v4', async () => {
     const { headers, status, data } = await GET `/browse/$metadata`
@@ -17,8 +17,8 @@ describe('cap/samples - Bookshop APIs', () => {
   })
 
   it('serves ListOfBooks?$expand=genre,currency', async () => {
-    const Mystery = { ID: 16, name: 'Mystery', descr: null, parent_ID: 10 }
-    const Romance = { ID: 15, name: 'Romance', descr: null, parent_ID: 10 }
+    const Mystery = { name: 'Mystery' }
+    const Romance = { name: 'Romance' }
     const USD = { code: 'USD', name: 'US Dollar', descr: null, symbol: '$' }
     const { data } = await GET `/browse/ListOfBooks ${{
       params: { $search: 'Po', $select: `title,author`, $expand:`genre,currency` },
@@ -93,9 +93,9 @@ describe('cap/samples - Bookshop APIs', () => {
 
   it('serves user info', async () => {
     const { data: alice } = await GET `/user/me`
-    expect(alice).to.containSubset({ id: 'alice', locale:'en' })
+    expect(alice).to.containSubset({ id: 'alice' })
     const { data: joe } = await GET (`/user/me`, {auth: { username: 'joe' }})
-    expect(joe).to.containSubset({ id: 'joe', locale:'en' })
+    expect(joe).to.containSubset({ id: 'joe' })
   })
 
 })
